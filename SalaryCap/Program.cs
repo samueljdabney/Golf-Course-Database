@@ -16,11 +16,14 @@ namespace GolfHandicap
 
 
         static void Main(string[] args)
-        {
+        {   
+            //Golf course directory and json read
+
             string currentDirectory = Directory.GetCurrentDirectory();
             DirectoryInfo directory = new DirectoryInfo(currentDirectory);
             var fileName = Path.Combine(directory.FullName, "Courses.json");
             
+            // menu start and user input questions
             int result = 0;
             while (result != 4)
             {
@@ -30,11 +33,14 @@ namespace GolfHandicap
 
                 if (int.TryParse(Console.ReadLine(), out result))
                 {
+                    // Golf course list
                     if (result == 1)
                     {
                         List<GolfCourse> golfCourses = GetCourses(fileName);
                         ViewCourses(golfCourses);
                     }
+
+                    // Add a new course user input functions
                     else if (result == 2)
                     {
                         GolfCourse course = new GolfCourse();
@@ -70,6 +76,7 @@ namespace GolfHandicap
                         AddCourse(course, golfCourses, fileName);
                     }
 
+                    // golf course delete function
                     else if (result == 3)
                     {
                         Console.WriteLine("Golf Course Name?");
@@ -77,6 +84,8 @@ namespace GolfHandicap
 
                         DeleteCourse(name, fileName);
                     }
+
+                    //exit out of program
                     else if (result == 4)
                     {
                         Console.WriteLine("Head to the 19th green");
@@ -88,7 +97,7 @@ namespace GolfHandicap
 
 
         }
-
+        // delete and save methods for 3
         public static void DeleteCourse(string name, string fileName)
         {
             List<GolfCourse> golfCourses = GetCourses(fileName);
@@ -106,21 +115,14 @@ namespace GolfHandicap
             Save(golfCourses, fileName);
         }
 
-       
-
-
-
-
-        // delete individual courses            (firstordefault)  delete method
-        
-        // loop the menu til exit                 Main method
+        // add course method for .2
         public static void AddCourse(GolfCourse course, List<GolfCourse> golfCourses, string fileName)
         {
             golfCourses.Add(course);
 
             Save(golfCourses, fileName);
         }
-
+        
         private static void Save(List<GolfCourse> golfCourses, string fileName)
         {
             try
@@ -152,22 +154,24 @@ namespace GolfHandicap
 
 
         }
-
+        
         private static List<GolfCourse> GetCourses(string fileName)
         {
-            //throw new NotImplementedException();
+            
             List<GolfCourse> ReturnValue = new List<GolfCourse>();
 
             try
             {
                 if (File.Exists(fileName))
                 {
-                    //read the file
+                    //read the file with json
+
                     string jsonData = File.ReadAllText(fileName);
 
                     if (!String.IsNullOrEmpty(jsonData))
                     {
                         //deserialize the file back into a list
+
                         ReturnValue = JsonConvert.DeserializeObject<List<GolfCourse>>(jsonData);
                     }
                 }
@@ -185,6 +189,7 @@ namespace GolfHandicap
 
             return ReturnValue;
         }
+        //streamreader usage
 
         public static string ReadFile(string fileName)
             {
